@@ -10,8 +10,8 @@ const configOptions = {
 }
 
 const colors = {
-    background: "rgba(30,29,39)",
-    rainColors: ["rgba(16,161,167)", "rgba(228,75,109)", "rgba(228,97,4)"]
+    background: "rgb(30,29,39)",
+    rainColors: ["rgba(16,161,167,1)", "rgba(228,75,109,1)", "rgba(228,97,4,1)"]
 }
 
 if(configOptions.lightning=="false" || configOptions.lightning==false){
@@ -24,8 +24,9 @@ function raindrop() {
     this.x = parseInt(Math.random()*100000)%canvas.width;
     this.y = -1*this.height;
     this.vy = 1+this.height/10;
-    this.alpha = 0.3+Math.random();
-    this.color = colors.rainColors[parseInt(Math.random()*100000)%colors.rainColors.length].split(')')[0]+','+this.alpha+")"
+    this.alpha = Math.random();
+    this.alpha = this.alpha<0.3?0.3:this.alpha;
+    this.color = colors.rainColors[parseInt(Math.random()*100000)%colors.rainColors.length].split(',').slice(0,3).join(',')+','+this.alpha+")"
 }
 
 function update(){
@@ -40,10 +41,10 @@ function update(){
 }
 
 function lightning(){
-    colors.background = "rgba(78,76,99)";
+    colors.background = "rgb(78,76,99)";
     setTimeout(()=>{
         lightningMode = false;
-        colors.background = "rgba(30,29,39)";
+        colors.background = "rgb(30,29,39)";
     },10);
 }
 
@@ -58,6 +59,7 @@ function redraw(){
     }
     for(let i=0;i<drops.length;i++){
         let currentDrop = drops[i];
+        console.log(currentDrop.color);
         ctx.fillStyle = currentDrop.color;
         ctx.fillRect(currentDrop.x, currentDrop.y, currentDrop.width, currentDrop.height);
     }
